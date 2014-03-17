@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>MovieSearchApp</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body>
+  <!-- Search Template -->
+  <script type="text/x-handlebars" id="results">
+    <nav class="navbar navbar-inverse" role="navigation">
+      <div class="container-fluid">
+        <div  class="navbar-header">
+          <a class="navbar-brand" href="#">MovieSearchApp</a>
+        </div>
+        <form class="navbar-form navbar-right" role="search">
+          <div class="form-group">
+            {{input type="text" value=text class="form-control" placeholder="Actor's name"}}
+          </div>
+          <button {{action 'searchActors'}} class="btn btn-default">Search</button>
+        </form>
+      </div>
+    </nav>
+  	<div class="container-fluid">
+      <div class="row">
+    	<div class="col-md-4">
+			<table class="table">
+              <thead>
+                <tr>
+                  <th>Actors results</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each}}
+                <tr>
+                  <td>{{#link-to 'movies' id}}{{name}}{{/link-to}}</td>
+                </tr>
+                {{/each}}
+              </tbody>
+            </table>
+			<div {{bind-attr class="messageClass"}}>
+			  <div class="alert alert-warning">{{message}}</div>
+			</div>
+			<div {{bind-attr class="paginationClass"}}>
+			  <span>
+			    <ul class="pagination">
+			      <li><a {{action 'previousPage' }}>Previous</a></li>
+				  <li class="disabled"><a href="#">{{currentPage}} of {{totalPages}}</a></li>
+			      <li><a {{action 'nextPage' }}>Next</a></li>
+			    </ul>
+			  </span>
+			</div>
+        </div>
+        <div class="col-md-8">
+			{{outlet}}
+        </div>
+      </div>
+    </div>	
+  </script>
+  
+  <!-- Movies Template -->
+  <script type="text/x-handlebars" id="movies">
+    <div class="panel panel-default">
+	  <div class="panel-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Movies</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each}}
+              <tr>
+                <td><div class="text-primary"><h3>{{title}}</h3></div><div class="text-muted">{{release_date}}</div></td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+	  </div>
+	</div>	
+  </script>
+  
+  <script src="js/libs/jquery-1.10.2.min.js"></script>
+  <script src="js/libs/handlebars-1.0.0.js"></script>
+  <script src="js/libs/ember.js"></script>
+  <script src="js/libs/bootstrap.min.js"></script>
+  
+  <script src="js/application.js"></script>
+  <script src="js/router.js"></script>
+            	
+</body>
+</html>
