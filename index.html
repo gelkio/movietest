@@ -15,7 +15,7 @@
         </div>
         <form class="navbar-form navbar-right" role="search">
           <div class="form-group">
-            {{input type="text" value=text class="form-control" placeholder="Actor's name"}}
+            {{input type="text" value=text class="form-control" placeholder="Actor or Movie"}}
           </div>
           <button {{action 'searchActors'}} class="btn btn-default">Search</button>
         </form>
@@ -147,7 +147,7 @@
         {{#each}}
         <tr>
           <td>
-            <div {{action 'showMovieDetail' id}} class="text-primary"><h3>{{title}}</h3></div>
+            <div style="cursor:pointer;" {{action 'showMovieDetail' id}} class="text-primary"><h3>{{title}}</h3></div>
             <div class="text-muted">{{release_date}}</div>
           </td>
         </tr>
