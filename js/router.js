@@ -7,6 +7,7 @@ MoviesApp.Router.map(function() {
 
 MoviesApp.ResultsRoute = Ember.Route.extend({
   model: function(params){
+    Ember.$("#resultDetail").addClass('hidden');
     var url = MoviesApp.API_URL+'movie/now_playing?api_key='+MoviesApp.API_KEY;
     return Ember.$.getJSON(url).then(function(data) {
       return data.results;
@@ -48,6 +49,8 @@ MoviesApp.ResultsController = Ember.ArrayController.extend({
     
 		self.set('actorMessageClass', 'hidden');
         self.set('movieMessageClass', 'hidden');
+        
+        Ember.$("#resultDetail").addClass('hidden');
 		
 		if(text !== ""){
 		  Ember.$.getJSON(urlActors).then(function(data) {
@@ -176,6 +179,8 @@ MoviesApp.MoviesRoute = Ember.Route.extend({
   model: function(params){
     var self = this;
     
+    Ember.$("#resultDetail").removeClass('hidden');
+      
     var actorDetailUrl = MoviesApp.API_URL+'person/'+params.actorId+'?api_key='+MoviesApp.API_KEY;
     Ember.$.getJSON(actorDetailUrl).then(function(data) {
       Ember.$('#actorName').html(data.name);
