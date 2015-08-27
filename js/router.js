@@ -48,11 +48,6 @@ MoviesApp.ResultsController = Ember.ArrayController.extend({
     
 		self.set('actorMessageClass', 'hidden');
         self.set('movieMessageClass', 'hidden');
-        
-        Ember.$('#resultTabs a').click(function (e) {
-          e.preventDefault()
-          $(this).tab('show')
-        });
 		
 		if(text !== ""){
 		  Ember.$.getJSON(urlActors).then(function(data) {
@@ -186,12 +181,13 @@ MoviesApp.MoviesRoute = Ember.Route.extend({
       Ember.$('#actorName').html(data.name);
       Ember.$('#actorBiography').html(data.biography);
       Ember.$('#actorPhoto').attr('src', MoviesApp.IMAGES_URL+data.profile_path);
-    });
-    
+    });  
+      
     var url = MoviesApp.API_URL+'person/'+params.actorId+'/movie_credits?api_key='+MoviesApp.API_KEY;
     return Ember.$.getJSON(url).then(function(data) {
       return data.cast;
     });
+    
   }
 });
 

@@ -101,7 +101,16 @@
               </div>
           </div>
           <div class="col-md-8">  
-			{{outlet}}
+            <div class="panel panel-default">
+	          <div class="panel-body">      
+                <h3><span id="actorName"></span>{{actorName}}</h3>
+                <div class="row">
+                  <div class="col-md-3"><img id="actorPhoto" /></div>
+                  <div class="col-md-9"><p align="justify" id="actorBiography"></p></div> 
+                </div>
+			    {{outlet}}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -128,32 +137,23 @@
   
   <!-- Movies Template -->
   <script type="text/x-handlebars" id="movies">
-    <div class="panel panel-default">
-	  <div class="panel-body">
-          <h3><span id="actorName"></span></h3>
-          <div class="row">
-            <div class="col-md-3"><img id="actorPhoto" /></div>
-            <div class="col-md-9"><p align="justify" id="actorBiography"></p></div> 
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Movies</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each}}
-              <tr>
-                <td>
-                    <div {{action 'showMovieDetail' id}} class="text-primary"><h3>{{title}}</h3></div>
-                    <div class="text-muted">{{release_date}}</div>
-                </td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-	  </div>
-	</div>	
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Movies</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each}}
+        <tr>
+          <td>
+            <div {{action 'showMovieDetail' id}} class="text-primary"><h3>{{title}}</h3></div>
+            <div class="text-muted">{{release_date}}</div>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
   </script>
   
   <script src="js/libs/jquery-1.10.2.min.js"></script>
