@@ -22,37 +22,105 @@
       </div>
     </nav>
   	<div class="container-fluid">
-      <div class="row">
-    	<div class="col-md-4">
-			<table class="table">
-              <thead>
-                <tr>
-                  <th>Actors results</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each}}
-                <tr>
-                  <td>{{#link-to 'movies' id}}{{name}}{{/link-to}}</td>
-                </tr>
-                {{/each}}
-              </tbody>
-            </table>
-			<div {{bind-attr class="messageClass"}}>
-			  <div class="alert alert-warning">{{message}}</div>
-			</div>
-			<div {{bind-attr class="paginationClass"}}>
-			  <span>
-			    <ul class="pagination">
-			      <li><a {{action 'previousPage' }}>Previous</a></li>
-				  <li class="disabled"><a href="#">{{currentPage}} of {{totalPages}}</a></li>
-			      <li><a {{action 'nextPage' }}>Next</a></li>
-			    </ul>
-			  </span>
-			</div>
-        </div>
-        <div class="col-md-8">
+      <div {{bind-attr class="nowPlayingClass"}}>
+          <h3>Now Playing Movies</h3>
+          {{#each}}
+          <span>
+            <img style="margin: 3px;" {{action 'showMovieDetail' id}} src="https://image.tmdb.org/t/p/w150{{unbound poster_path}}" /> 
+          </span>
+          {{/each}}
+      </div>
+      <div {{bind-attr class="resultClass"}}>
+        <div class="row">
+    	  <div class="col-md-4">
+              <ul class="nav nav-tabs" role="tablist">
+                  <li role="presentation" class="active">
+                      <a href="#" {{action 'actorsTab' }}>Actors</a>
+                  </li>
+                  <li role="presentation" class="active">
+                      <a href="#" {{action 'moviesTab' }}>Movies</a>
+                  </li>
+              </ul>
+              <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane active" id="actorsResultPanel">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Actors results</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {{#each actorsContent}}
+                          <tr>
+                            <td>{{#link-to 'movies' id}}{{name}}{{/link-to}}</td>
+                          </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                      <div {{bind-attr class="actorMessageClass"}}>
+                        <div class="alert alert-warning">{{actorMessage}}</div>
+                      </div>
+                      <div {{bind-attr class="actorPaginationClass"}}>
+                        <span>
+                          <ul class="pagination">
+                            <li><a {{action 'actorPreviousPage' }}>Previous</a></li>
+                            <li class="disabled"><a href="#">{{actorCurrentPage}} of {{actorTotalPages}}</a></li>
+                            <li><a {{action 'actorNextPage' }}>Next</a></li>
+                          </ul>
+                        </span>
+                      </div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane" id="moviesResultPanel">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Movies results</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {{#each moviesContent}}
+                          <tr>
+                            <td><a href="#" {{action 'showMovieDetail' id}}>{{original_title}}</a></td>
+                          </tr>
+                          {{/each}}
+                        </tbody>
+                      </table>
+                      <div {{bind-attr class="movieMessageClass"}}>
+                        <div class="alert alert-warning">{{movieMessage}}</div>
+                      </div>
+                      <div {{bind-attr class="moviePaginationClass"}}>
+                        <span>
+                          <ul class="pagination">
+                            <li><a {{action 'moviePreviousPage' }}>Previous</a></li>
+                            <li class="disabled"><a href="#">{{movieCurrentPage}} of {{movieTotalPages}}</a></li>
+                            <li><a {{action 'movieNextPage' }}>Next</a></li>
+                          </ul>
+                        </span>
+                      </div>    
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-8">  
 			{{outlet}}
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <h3><span id="movieTitle"></span>{{movieTitle}}</h3>
+              <div class="row">
+                <div class="col-md-3">
+                    <img id="moviePoster" {{bind-attr src="moviePoster"}} >
+                </div>
+                <div class="col-md-9">
+                    <p align="justify" id="movieOverview"></p>
+                    <p align="justify">{{movieOverview}}</p>
+                </div> 
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>	
@@ -62,6 +130,11 @@
   <script type="text/x-handlebars" id="movies">
     <div class="panel panel-default">
 	  <div class="panel-body">
+          <h3><span id="actorName"></span></h3>
+          <div class="row">
+            <div class="col-md-3"><img id="actorPhoto" /></div>
+            <div class="col-md-9"><p align="justify" id="actorBiography"></p></div> 
+          </div>
           <table class="table">
             <thead>
               <tr>
@@ -71,7 +144,10 @@
             <tbody>
               {{#each}}
               <tr>
-                <td><div class="text-primary"><h3>{{title}}</h3></div><div class="text-muted">{{release_date}}</div></td>
+                <td>
+                    <div {{action 'showMovieDetail' id}} class="text-primary"><h3>{{title}}</h3></div>
+                    <div class="text-muted">{{release_date}}</div>
+                </td>
               </tr>
               {{/each}}
             </tbody>
@@ -81,12 +157,12 @@
   </script>
   
   <script src="js/libs/jquery-1.10.2.min.js"></script>
+  <script src="js/libs/bootstrap.min.js"></script>
   <script src="js/libs/handlebars-1.0.0.js"></script>
   <script src="js/libs/ember.js"></script>
-  <script src="js/libs/bootstrap.min.js"></script>
   
   <script src="js/application.js"></script>
   <script src="js/router.js"></script>
-            	
+           
 </body>
 </html>
